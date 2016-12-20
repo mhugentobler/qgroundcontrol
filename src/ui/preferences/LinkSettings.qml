@@ -287,6 +287,22 @@ Rectangle {
                         }
                     }
                     */
+                    QGCCheckBox {
+                        id:         highLatencyCheckBox
+                        text:       "High latency link"
+                        checked:    false
+                        enabled:    true
+                        onCheckedChanged: {
+                            if(editConfig) {
+                                editConfig.highLatency = checked
+                            }
+                        }
+                        Component.onCompleted: {
+                            if(editConfig)
+                                checked = editConfig.highLatency
+                        }
+                    }
+
                     Item {
                         height: ScreenTools.defaultFontPixelHeight
                         width:  parent.width

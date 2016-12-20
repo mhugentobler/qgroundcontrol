@@ -243,6 +243,8 @@ void MAVLinkProtocol::receiveBytes(LinkInterface* link, QByteArray b)
         {
             decodedFirstPacket = true;
 
+            qDebug("<-- %d", message.msgid);
+
             if(message.msgid == MAVLINK_MSG_ID_PING)
             {
                 // process ping requests (tgt_system and tgt_comp must be zero)
@@ -442,6 +444,8 @@ void MAVLinkProtocol::_sendMessage(mavlink_message_t message)
  */
 void MAVLinkProtocol::_sendMessage(LinkInterface* link, mavlink_message_t message)
 {
+    qDebug("--> %d", message.msgid);
+
     // Create buffer
     static uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     // Rewriting header to ensure correct link ID is set
@@ -465,6 +469,8 @@ void MAVLinkProtocol::_sendMessage(LinkInterface* link, mavlink_message_t messag
  */
 void MAVLinkProtocol::_sendMessage(LinkInterface* link, mavlink_message_t message, quint8 systemid, quint8 componentid)
 {
+    qDebug("--> %d", message.msgid);
+
     // Create buffer
     static uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
     // Rewriting header to ensure correct link ID is set

@@ -25,6 +25,8 @@
 #include "FollowMe.h"
 #include "QGroundControlQmlGlobal.h"
 
+#include <QDebug>
+
 QGC_LOGGING_CATEGORY(VehicleLog, "VehicleLog")
 
 #define UPDATE_TIMER 50
@@ -813,6 +815,8 @@ bool Vehicle::sendMessageOnLink(LinkInterface* link, mavlink_message_t message)
 
 void Vehicle::_sendMessageOnLink(LinkInterface* link, mavlink_message_t message)
 {
+    qDebug("--> %d", message.msgid);
+
     // Make sure this is still a good link
     if (!link || !_links.contains(link) || !link->isConnected()) {
         return;
