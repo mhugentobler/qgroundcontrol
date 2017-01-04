@@ -86,6 +86,15 @@ Rectangle {
                     QGroundControl.isVersionCheckEnabled = checked
                 }
             }
+            //-----------------------------------------------------------------
+            //-- Mavlink simple waypoint protocol
+            QGCCheckBox {
+                text:       qsTr("Use the simple waypoint protocol")
+                checked:    QGroundControl.isSimpleWptProtEnabled
+                onClicked: {
+                    QGroundControl.isSimpleWptProtEnabled = checked
+                }
+            }
         }
     }
 }

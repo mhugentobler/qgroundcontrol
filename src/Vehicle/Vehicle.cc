@@ -193,7 +193,7 @@ Vehicle::Vehicle(LinkInterface*             link,
 
     _loadSettings();
 
-    _missionManager = new MissionManager(this);
+    _missionManager = new MissionManager(this, _mavlink->isSimpleWptProtEnabled());
     connect(_missionManager, &MissionManager::error, this, &Vehicle::_missionManagerError);
 
     _parameterLoader = new ParameterLoader(this);
@@ -452,9 +452,9 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
 
     // Following are ArduPilot dialect messages
 
-    case MAVLINK_MSG_ID_WIND:
-        _handleWind(message);
-        break;
+//    case MAVLINK_MSG_ID_WIND:
+//        _handleWind(message);
+//        break;
     }
 
     emit mavlinkMessageReceived(message);
@@ -561,15 +561,15 @@ void Vehicle::_handleWindCov(mavlink_message_t& message)
     _windFactGroup.verticalSpeed()->setRawValue(0);
 }
 
-void Vehicle::_handleWind(mavlink_message_t& message)
-{
-    mavlink_wind_t wind;
-    mavlink_msg_wind_decode(&message, &wind);
+//void Vehicle::_handleWind(mavlink_message_t& message)
+//{
+//    mavlink_wind_t wind;
+//    mavlink_msg_wind_decode(&message, &wind);
 
-    _windFactGroup.direction()->setRawValue(wind.direction);
-    _windFactGroup.speed()->setRawValue(wind.speed);
-    _windFactGroup.verticalSpeed()->setRawValue(wind.speed_z);
-}
+//    _windFactGroup.direction()->setRawValue(wind.direction);
+//    _windFactGroup.speed()->setRawValue(wind.speed);
+//    _windFactGroup.verticalSpeed()->setRawValue(wind.speed_z);
+//}
 
 void Vehicle::_handleSysStatus(mavlink_message_t& message)
 {

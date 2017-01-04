@@ -261,6 +261,34 @@ Row {
         }
     }
 
+    //-----------------------
+    // Satcom Indicator
+    Item {
+        id:         satcom
+        width:      satcomIcon.width
+        height:     mainWindow.tbCellHeight
+        //visible:    activeVehicle.usingSatcomLink
+        QGCColoredImage {
+            id:         satcomIcon
+            height:     parent.height * 0.5
+            sourceSize.height: height
+            width:      height * 1.5
+            source:     "/qmlimages/SatPlane.svg"
+            fillMode:   Image.PreserveAspectFit
+            color:      qgcPal.buttonText
+            opacity:    0.5
+            anchors.verticalCenter: parent.verticalCenter
+        }
+        MouseArea {
+            anchors.fill:   parent
+            onClicked: {
+                var centerX = mapToItem(toolBar, x, y).x + (width / 2)
+                mainWindow.showPopUp(satcomInfo, centerX)
+            }
+        }
+    }
+
+
     //-------------------------------------------------------------------------
     //-- Vehicle Selector
     QGCButton {

@@ -189,6 +189,12 @@ void QGroundControlQmlGlobal::setMavlinkSystemID(int id)
     emit mavlinkSystemIDChanged(id);
 }
 
+void QGroundControlQmlGlobal::setIsSimpleWptProtEnabled(bool enable)
+{
+    qgcApp()->toolbox()->mavlinkProtocol()->enableSimpleWptProt(enable);
+    emit isSimpleWptProtEnabledChanged(enable);
+}
+
 void QGroundControlQmlGlobal::setVirtualTabletJoystick(bool enabled)
 {
     if (_virtualTabletJoystick != enabled) {

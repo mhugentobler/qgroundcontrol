@@ -147,11 +147,11 @@ void MissionItemTest::_testFactSignals(void)
     QSignalSpy commandSpy(&missionItem._commandFact, SIGNAL(valueChanged(QVariant)));
     missionItem.setCommand(MAV_CMD_NAV_WAYPOINT);
     QCOMPARE(commandSpy.count(), 0);
-    missionItem.setCommand(MAV_CMD_NAV_ALTITUDE_WAIT);
+    missionItem.setCommand(MAV_CMD_NAV_LOITER_UNLIM);
     QCOMPARE(commandSpy.count(), 1);
     QList<QVariant> arguments = commandSpy.takeFirst();
     QCOMPARE(arguments.count(), 1);
-    QCOMPARE((MAV_CMD)arguments.at(0).toInt(), MAV_CMD_NAV_ALTITUDE_WAIT);
+    QCOMPARE((MAV_CMD)arguments.at(0).toInt(), MAV_CMD_NAV_LOITER_UNLIM);
 
     // frame
     QSignalSpy frameSpy(&missionItem._frameFact, SIGNAL(valueChanged(QVariant)));

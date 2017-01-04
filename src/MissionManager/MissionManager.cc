@@ -19,7 +19,7 @@
 
 QGC_LOGGING_CATEGORY(MissionManagerLog, "MissionManagerLog")
 
-MissionManager::MissionManager(Vehicle* vehicle)
+MissionManager::MissionManager(Vehicle* vehicle, bool useSimpleWptProt)
     : _vehicle(vehicle)
     , _dedicatedLink(NULL)
     , _ackTimeoutTimer(NULL)
@@ -27,14 +27,23 @@ MissionManager::MissionManager(Vehicle* vehicle)
     , _readTransactionInProgress(false)
     , _writeTransactionInProgress(false)
     , _currentMissionItem(-1)
+    , _simpleWptProtEnabled(useSimpleWptProt)
 {
     connect(_vehicle, &Vehicle::mavlinkMessageReceived, this, &MissionManager::_mavlinkMessageReceived);
     
     _ackTimeoutTimer = new QTimer(this);
     _ackTimeoutTimer->setSingleShot(true);
-    _ackTimeoutTimer->setInterval(_ackTimeoutMilliseconds);
+    _ackTimeoutTimer->setInterval(_ackTimeoutMilliseconds); // TODO: set this depending on low/high latency link used
     
     connect(_ackTimeoutTimer, &QTimer::timeout, this, &MissionManager::_ackTimeout);
+
+    _simpleWptProtTimer = new QTimer(this);
+    _simpleWptProtTimer->setSingleShot(false);
+    _simpleWptProtTimer->setInterval(_simpleWptProtTimeoutMillisecods);
+
+    connect(_simpleWptProtTimer, &QTimer::timeout, this, &MissionManager::_singleWptProtTimerCallback);
+
+    qDebug(">>>>>>>>> MISSION MANAGER - SIMPLE PROT %d", _simpleWptProtEnabled);
 }
 
 MissionManager::~MissionManager()
@@ -90,8 +99,13 @@ void MissionManager::writeMissionItems(const QList<MissionItem*>& missionItems)
 
     _dedicatedLink = _vehicle->priorityLink();
     _vehicle->sendMessageOnLink(_dedicatedLink, message);
-    _startAckTimeout(AckMissionRequest);
     emit inProgressChanged(true);
+
+    if(_simpleWptProtEnabled && _missionItems.count() != 0) {
+        _simpleWptProtTimer->start();
+    } else {
+        _startAckTimeout(AckMissionRequest);
+    }
 }
 
 void MissionManager::writeArduPilotGuidedMissionItem(const QGeoCoordinate& gotoCoord, bool altChangeOnly)
@@ -157,6 +171,40 @@ void MissionManager::requestMissionItems(void)
     emit inProgressChanged(true);
 }
 
+void MissionManager::_singleWptProtTimerCallback(void)
+{
+    int seq = _itemIndicesToWrite.takeFirst();
+
+    mavlink_message_t       messageOut;
+    mavlink_mission_item_t  missionItem;
+
+    MissionItem* item = (MissionItem*)_missionItems[seq];
+
+    missionItem.target_system =     _vehicle->id();
+    missionItem.target_component =  MAV_COMP_ID_MISSIONPLANNER;
+    missionItem.seq =               seq;
+    missionItem.command =           item->command();
+    missionItem.x =                 item->coordinate().latitude();
+    missionItem.y =                 item->coordinate().longitude();
+    missionItem.z =                 item->coordinate().altitude();
+    missionItem.param1 =            item->param1();
+    missionItem.param2 =            item->param2();
+    missionItem.param3 =            item->param3();
+    missionItem.param4 =            item->param4();
+    missionItem.frame =             item->frame();
+    missionItem.current =           seq == 0;
+    missionItem.autocontinue =      item->autoContinue();
+
+    mavlink_msg_mission_item_encode(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(), qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(), &messageOut, &missionItem);
+
+    _vehicle->sendMessageOnLink(_dedicatedLink, messageOut);
+
+    if (_itemIndicesToWrite.count() == 0) {
+        _simpleWptProtTimer->stop();
+        _startAckTimeout(AckMissionRequest);
+    }
+}
+
 void MissionManager::_ackTimeout(void)
 {
     AckType_t timedOutAck = _retryAck;
@@ -217,7 +265,8 @@ void MissionManager::_readTransactionComplete(void)
     
     mavlink_msg_mission_ack_encode(qgcApp()->toolbox()->mavlinkProtocol()->getSystemId(), qgcApp()->toolbox()->mavlinkProtocol()->getComponentId(), &message, &missionAck);
     
-    _vehicle->sendMessageOnLink(_dedicatedLink, message);
+    if(!_simpleWptProtEnabled)
+        _vehicle->sendMessageOnLink(_dedicatedLink, message);
 
     _finishTransaction(true);
     emit newMissionItemsAvailable();
@@ -241,7 +290,11 @@ void MissionManager::_handleMissionCount(const mavlink_message_t& message)
         for (int i=0; i<missionCount.count; i++) {
             _itemIndicesToRead << i;
         }
-        _requestNextMissionItem();
+        if(_simpleWptProtEnabled) {
+            _startAckTimeout(AckMissionItem);
+        } else {
+            _requestNextMissionItem();
+        }
     }
 }
 
@@ -315,7 +368,11 @@ void MissionManager::_handleMissionItem(const mavlink_message_t& message)
     if (_itemIndicesToRead.count() == 0) {
         _readTransactionComplete();
     } else {
-        _requestNextMissionItem();
+        if(_simpleWptProtEnabled) {
+            _startAckTimeout(AckMissionItem);
+        } else {
+            _requestNextMissionItem();
+        }
     }
 }
 

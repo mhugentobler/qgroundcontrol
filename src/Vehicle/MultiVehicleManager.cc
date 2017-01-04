@@ -121,6 +121,30 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
     }
 #endif
 
+    connect(qgcApp()->toolbox()->linkManager(), &LinkManager::enableSatcom, this, &MultiVehicleManager::_enableSatcom);
+}
+
+void MultiVehicleManager::_enableSatcom(bool enable)
+{
+    qDebug("MVM enable satcom");
+    mavlink_message_t msg;
+    mavlink_command_long_t cmd;
+
+    cmd.command = 31666;
+    cmd.confirmation = 0;
+    cmd.param1 = 1.0f;
+    cmd.param2 = 0.0f;
+    cmd.param3 = 0.0f;
+    cmd.param4 = 0.0f;
+    cmd.param5 = 0.0f;
+    cmd.param6 = 0.0f;
+    cmd.param7 = 0.0f;
+    cmd.target_system = _activeVehicle->id();
+    cmd.target_component = _activeVehicle->defaultComponentId();
+
+    mavlink_msg_command_long_encode(_mavlinkProtocol->getSystemId(), _mavlinkProtocol->getComponentId(), &msg, &cmd);
+
+    _activeVehicle->sendMessageOnPriorityLink(msg);
 }
 
 /// This slot is connected to the Vehicle::allLinksDestroyed signal such that the Vehicle is deleted

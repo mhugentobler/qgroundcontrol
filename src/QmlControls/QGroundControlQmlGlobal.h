@@ -80,6 +80,7 @@ public:
     Q_PROPERTY(bool     isMultiplexingEnabled   READ isMultiplexingEnabled      WRITE setIsMultiplexingEnabled      NOTIFY isMultiplexingEnabledChanged)
     Q_PROPERTY(bool     isVersionCheckEnabled   READ isVersionCheckEnabled      WRITE setIsVersionCheckEnabled      NOTIFY isVersionCheckEnabledChanged)
     Q_PROPERTY(int      mavlinkSystemID         READ mavlinkSystemID            WRITE setMavlinkSystemID            NOTIFY mavlinkSystemIDChanged)
+    Q_PROPERTY(bool     isSimpleWptProtEnabled  READ isSimpleWptProtEnabled     WRITE setIsSimpleWptProtEnabled     NOTIFY isSimpleWptProtEnabledChanged)
 
     Q_PROPERTY(Fact*    offlineEditingFirmwareType  READ offlineEditingFirmwareType CONSTANT)
     Q_PROPERTY(Fact*    distanceUnits               READ distanceUnits              CONSTANT)
@@ -158,6 +159,7 @@ public:
     bool    isMultiplexingEnabled   () { return _toolbox->mavlinkProtocol()->multiplexingEnabled(); }
     bool    isVersionCheckEnabled   () { return _toolbox->mavlinkProtocol()->versionCheckEnabled(); }
     int     mavlinkSystemID         () { return _toolbox->mavlinkProtocol()->getSystemId(); }
+    bool    isSimpleWptProtEnabled  () { return _toolbox->mavlinkProtocol()->isSimpleWptProtEnabled(); }
 
     QGeoCoordinate lastKnownHomePosition() { return qgcApp()->lastKnownHomePosition(); }
 
@@ -179,6 +181,7 @@ public:
     void    setIsMultiplexingEnabled    (bool enable);
     void    setIsVersionCheckEnabled    (bool enable);
     void    setMavlinkSystemID          (int  id);
+    void    setIsSimpleWptProtEnabled   (bool enable);
 
     bool experimentalSurvey(void) const;
     void setExperimentalSurvey(bool experimentalSurvey);
@@ -203,6 +206,7 @@ signals:
     void flightMapPositionChanged       (QGeoCoordinate flightMapPosition);
     void flightMapZoomChanged           (double flightMapZoom);
     void experimentalSurveyChanged      (bool experimentalSurvey);
+    void isSimpleWptProtEnabledChanged  (bool enabled);
 
 private:
     FlightMapSettings*      _flightMapSettings;

@@ -621,6 +621,12 @@ void LinkManager::shutdown(void)
     disconnectAll();
 }
 
+void LinkManager::enableSatcomClick(void)
+{
+    qDebug("CLICKED");
+    emit enableSatcom(true);
+}
+
 bool LinkManager::_setAutoconnectWorker(bool& currentAutoconnect, bool newAutoconnect, const char* autoconnectKey)
 {
     if (currentAutoconnect != newAutoconnect) {

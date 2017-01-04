@@ -54,6 +54,7 @@ MAVLinkProtocol::MAVLinkProtocol(QGCApplication* app)
     , m_multiplexingEnabled(false)
     , m_authEnabled(false)
     , m_enable_version_check(true)
+    , m_simpleWptProtEnabled(false)
     , m_paramRetransmissionTimeout(350)
     , m_paramRewriteTimeout(500)
     , m_paramGuardEnabled(true)
@@ -127,6 +128,7 @@ void MAVLinkProtocol::loadSettings()
     settings.beginGroup("QGC_MAVLINK_PROTOCOL");
     enableVersionCheck(settings.value("VERSION_CHECK_ENABLED", m_enable_version_check).toBool());
     enableMultiplexing(settings.value("MULTIPLEXING_ENABLED", m_multiplexingEnabled).toBool());
+    enableSimpleWptProt(settings.value("SIMPLE_WPT_PROT_ENABLED", m_simpleWptProtEnabled).toBool());
 
     // Only set system id if it was valid
     int temp = settings.value("GCS_SYSTEM_ID", systemId).toInt();
@@ -156,6 +158,7 @@ void MAVLinkProtocol::storeSettings()
     settings.beginGroup("QGC_MAVLINK_PROTOCOL");
     settings.setValue("VERSION_CHECK_ENABLED", m_enable_version_check);
     settings.setValue("MULTIPLEXING_ENABLED", m_multiplexingEnabled);
+    settings.setValue("SIMPLE_WPT_PROT_ENABLED", m_simpleWptProtEnabled);
     settings.setValue("GCS_SYSTEM_ID", systemId);
     settings.setValue("GCS_AUTH_KEY", m_authKey);
     settings.setValue("GCS_AUTH_ENABLED", m_authEnabled);
@@ -549,6 +552,12 @@ void MAVLinkProtocol::enableVersionCheck(bool enabled)
 {
     m_enable_version_check = enabled;
     emit versionCheckChanged(enabled);
+}
+
+void MAVLinkProtocol::enableSimpleWptProt(bool enabled)
+{
+    m_simpleWptProtEnabled = enabled;
+    emit simpleWptProtEnabledChanged(enabled);
 }
 
 void MAVLinkProtocol::_vehicleCountChanged(int count)

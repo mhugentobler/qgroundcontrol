@@ -33,6 +33,7 @@ Rectangle {
     QGCPalette { id: qgcPal; colorGroupEnabled: true }
 
     property var  activeVehicle:        QGroundControl.multiVehicleManager.activeVehicle
+    property var  linkManager:          QGroundControl.linkManager
     property var  mainWindow:           null
     property bool isMessageImportant:   activeVehicle ? !activeVehicle.messageTypeNormal && !activeVehicle.messageTypeNone : false
     property bool isBackgroundDark:     true
@@ -91,6 +92,10 @@ Rectangle {
         if(value > -90)
             return colorOrange;
         return colorRed;
+    }
+
+    function getSatcomColor() {
+        return colorGreen;
     }
 
     Component.onCompleted: {
@@ -294,6 +299,56 @@ Rectangle {
                 }
             }
 
+            Component.onCompleted: {
+                var pos = mapFromItem(toolBar, centerX - (width / 2), toolBar.height)
+                x = pos.x
+                y = pos.y + ScreenTools.defaultFontPixelHeight
+            }
+        }
+    }
+
+    //-------------------------------------------------------------------------
+    // Satellite link Info
+    Component {
+        id: satcomInfo
+        Rectangle {
+            color:          qgcPal.window //Qt.rgba(0,0,0,0.75)
+            width:          satcomCol.width   + ScreenTools.defaultFontPixelWidth  * 3
+            height:         satcomCol.height  + ScreenTools.defaultFontPixelHeight * 2
+            radius:         ScreenTools.defaultFontPixelHeight * 0.5
+            Column {
+                id:                 satcomCol
+                spacing:            ScreenTools.defaultFontPixelHeight * 0.5
+                width:              Math.max(satcomGrid.width, satcomLabel.width)
+                anchors.margins:    ScreenTools.defaultFontPixelHeight
+                anchors.centerIn:   parent
+                QGCLabel {
+                    id:         satcomLabel
+                    text:       "Satellite link status"
+                    color:      colorWhite
+                    font.weight:Font.DemiBold
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+                GridLayout {
+                    id:                 satcomGrid
+                    anchors.margins:    ScreenTools.defaultFontPixelHeight
+                    columnSpacing:      ScreenTools.defaultFontPixelWidth
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    columns: 2
+                    QGCLabel {
+                        text:   "satcom connection"
+                        color:  colorWhite
+                    }
+                    QGCLabel {
+                        text:   "1234567890"
+                        color:  colorWhite
+                    }
+                }
+                Button {
+                    text: "CLICK ME"
+                    onClicked: linkManager.enableSatcomClick()
+                }
+            }
             Component.onCompleted: {
                 var pos = mapFromItem(toolBar, centerX - (width / 2), toolBar.height)
                 x = pos.x

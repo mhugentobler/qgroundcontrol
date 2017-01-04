@@ -100,6 +100,11 @@ public:
     int getActionRetransmissionTimeout() {
         return m_actionRetransmissionTimeout;
     }
+    /** @brief Get the simple waypoint protocol state */
+    bool isSimpleWptProtEnabled () {
+        return m_simpleWptProtEnabled;
+    }
+
     /**
      * Retrieve a total of all successfully parsed packets for the specified link.
      * @returns -1 if this is not available for this protocol, # of packets otherwise.
@@ -168,6 +173,9 @@ public slots:
         m_authKey = key;
     }
 
+    /** @brief Enable / disable the simple waypoint protocol */
+    void enableSimpleWptProt(bool enabled);
+
     /** @brief Load protocol settings */
     void loadSettings();
     /** @brief Store protocol settings */
@@ -186,6 +194,7 @@ protected:
     bool m_authEnabled;        ///< Enable authentication token broadcast
     QString m_authKey;         ///< Authentication key
     bool m_enable_version_check; ///< Enable checking of version match of MAV and QGC
+    bool m_simpleWptProtEnabled; ///< Use the simple waypoint proto
     int m_paramRetransmissionTimeout; ///< Timeout for parameter retransmission
     int m_paramRewriteTimeout;    ///< Timeout for sending re-write request
     bool m_paramGuardEnabled;       ///< Parameter retransmission/rewrite enabled
@@ -229,6 +238,8 @@ signals:
     void actionGuardChanged(bool enabled);
     /** @brief Emitted if action request timeout changed */
     void actionRetransmissionTimeoutChanged(int ms);
+    /** @brief Emitted if the simple waypoint protocol is enabled / disabled */
+    void simpleWptProtEnabledChanged(bool enabled);
 
     void receiveLossPercentChanged(int uasId, float lossPercent);
     void receiveLossTotalChanged(int uasId, int totalLoss);

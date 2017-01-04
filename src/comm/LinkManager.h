@@ -151,6 +151,8 @@ public:
     // Called to signal app shutdown. Disconnects all links while turning off auto-connect.
     Q_INVOKABLE void shutdown(void);
 
+    Q_INVOKABLE void enableSatcomClick(void);
+
 #ifdef QT_DEBUG
     // Only used by unit test tp restart after a shutdown
     void restart(void) { setConnectionsAllowed(); }
@@ -163,6 +165,7 @@ public:
     virtual void setToolbox(QGCToolbox *toolbox);
 
 signals:
+    void enableSatcom               (bool enable);
     void autoconnectUDPChanged      (bool autoconnect);
     void autoconnectPixhawkChanged  (bool autoconnect);
     void autoconnect3DRRadioChanged (bool autoconnect);
