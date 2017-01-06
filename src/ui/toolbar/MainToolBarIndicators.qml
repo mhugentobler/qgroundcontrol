@@ -267,7 +267,8 @@ Row {
         id:         satcom
         width:      satcomIcon.width
         height:     mainWindow.tbCellHeight
-        //visible:    activeVehicle.usingSatcomLink
+        onHighLatencySignal: satcom.visible(highLatencyLink)
+        //visible:    highLatencyLink
         QGCColoredImage {
             id:         satcomIcon
             height:     parent.height * 0.5

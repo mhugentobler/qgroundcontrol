@@ -287,14 +287,30 @@ Rectangle {
                         }
                     }
                     */
+//                    QGCCheckBox {
+//                        id:         highLatencyCheckBox
+//                        text:       "High latency link"
+//                        checked:    false
+//                        onCheckedChanged: {
+//                            if(editConfig) {
+//                                editConfig.highLatency = checked
+//                            }
+//                        }
+//                        Component.onCompleted: {
+//                            if(editConfig)
+//                                checked = editConfig.highLatency
+//                        }
+//                    }
+
                     QGCCheckBox {
                         id:         highLatencyCheckBox
                         text:       "High latency link"
-                        checked:    false
-                        enabled:    true
+                        checked:    true
+                        signal highLatencySignal(bool highLatencyLink)
                         onCheckedChanged: {
                             if(editConfig) {
                                 editConfig.highLatency = checked
+                                console.debug(highLatencyCheckBox.highLatencySignal(editConfig.highLatency))
                             }
                         }
                         Component.onCompleted: {

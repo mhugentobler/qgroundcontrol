@@ -627,6 +627,7 @@ void LinkManager::enableSatcomClick(void)
     emit enableSatcom(true);
 }
 
+
 bool LinkManager::_setAutoconnectWorker(bool& currentAutoconnect, bool newAutoconnect, const char* autoconnectKey)
 {
     if (currentAutoconnect != newAutoconnect) {

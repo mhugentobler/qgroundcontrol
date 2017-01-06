@@ -345,7 +345,7 @@ Rectangle {
                     }
                 }
                 Button {
-                    text: "CLICK ME"
+                    text: "establish satcom link"
                     onClicked: linkManager.enableSatcomClick()
                 }
             }
