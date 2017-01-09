@@ -35,7 +35,7 @@ Row {
                 return colorOrange;
             if (activeVehicle.messageTypeError)
                 return colorRed;
-            // Cannot be so make make it obnoxious to show error
+            // Cannot be so make it obnoxious to show error
             console.log("Invalid vehicle message type")
             return "purple";
         }
@@ -277,7 +277,7 @@ Row {
             source:     "/qmlimages/SatPlane.svg"
             fillMode:   Image.PreserveAspectFit
             color:      qgcPal.buttonText
-            opacity:    0.5
+            opacity:    mainWindow.satcomOpacity
             anchors.verticalCenter: parent.verticalCenter
         }
         MouseArea {

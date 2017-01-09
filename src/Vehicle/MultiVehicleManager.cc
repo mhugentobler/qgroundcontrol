@@ -121,10 +121,10 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
     }
 #endif
 
-    connect(qgcApp()->toolbox()->linkManager(), &LinkManager::enableSatcom, this, &MultiVehicleManager::_enableSatcom);
+    connect(qgcApp()->toolbox()->linkManager(), &LinkManager::isSatcomActive, this, &MultiVehicleManager::_isSatcomActive);
 }
 
-void MultiVehicleManager::_enableSatcom(bool enable)
+void MultiVehicleManager::_isSatcomActive(bool enable)
 {
     qDebug("MVM enable satcom");
     mavlink_message_t msg;

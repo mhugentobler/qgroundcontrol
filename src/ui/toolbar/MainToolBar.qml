@@ -324,7 +324,7 @@ Rectangle {
                 anchors.centerIn:   parent
                 QGCLabel {
                     id:         satcomLabel
-                    text:       "Satellite link status"
+                    text:       "Communication Info"
                     color:      colorWhite
                     font.weight:Font.DemiBold
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -336,17 +336,27 @@ Rectangle {
                     anchors.horizontalCenter: parent.horizontalCenter
                     columns: 2
                     QGCLabel {
-                        text:   "satcom connection"
+                        text:   "satcom/telemetry"
                         color:  colorWhite
                     }
                     QGCLabel {
-                        text:   "1234567890"
+                        text:   "active"
                         color:  colorWhite
                     }
                 }
                 Button {
-                    text: "establish satcom link"
-                    onClicked: linkManager.enableSatcomClick()
+                    text: "switch to satcom/telemetry"
+                    onClicked: {
+                        linkManager.switchSatcomClick(mainWindow.isSatcomCheck)
+                        if (mainWindow.isSatcomCheck) {
+                            mainWindow.isSatcomCheck = false
+                            mainWindow.satcomOpacity = 1.0
+                        }
+                        else {
+                            mainWindow.isSatcomCheck = true
+                            mainWindow.satcomOpacity = 0.5
+                        }
+                    }
                 }
             }
             Component.onCompleted: {

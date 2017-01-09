@@ -621,10 +621,17 @@ void LinkManager::shutdown(void)
     disconnectAll();
 }
 
-void LinkManager::enableSatcomClick(void)
+void LinkManager::switchSatcomClick(bool satcomActive)
 {
     qDebug("CLICKED");
-    emit enableSatcom(true);
+    if (satcomActive) {
+        emit isSatcomActive(false);
+        qDebug("satcom is now active? %d",satcomActive);
+    }
+    else {
+        emit isSatcomActive(true);
+        qDebug("satcom is now active? %d",satcomActive);
+    }
 }
 
 

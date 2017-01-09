@@ -43,7 +43,9 @@ Item {
     property real   currentCenterX:     0
     property var    activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
     property string formatedMessage:    activeVehicle ? activeVehicle.formatedMessage : ""
-    property bool highLatencyCheck:     true
+    property bool   highLatencyCheck:   true
+    property bool   isSatcomCheck:      false
+    property real   satcomOpacity:      0.5
 
     onHeightChanged: {
         //-- We only deal with the available height if within the Fly or Plan view

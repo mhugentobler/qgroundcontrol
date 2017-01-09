@@ -94,7 +94,7 @@ private slots:
     void _autopilotParametersReadyChanged(bool parametersReady);
     void _sendGCSHeartbeat(void);
     void _vehicleHeartbeatInfo(LinkInterface* link, int vehicleId, int vehicleMavlinkVersion, int vehicleFirmwareType, int vehicleType);
-    void _enableSatcom(bool enable);
+    void _isSatcomActive(bool enable);
 
 private:
     bool _vehicleExists(int vehicleId);
