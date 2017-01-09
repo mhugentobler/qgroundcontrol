@@ -263,12 +263,12 @@ Row {
 
     //-----------------------
     // Satcom Indicator
+    // appears if high latency link is checked in communication link settings
     Item {
         id:         satcom
         width:      satcomIcon.width
         height:     mainWindow.tbCellHeight
-        onHighLatencySignal: satcom.visible(highLatencyLink)
-        //visible:    highLatencyLink
+        visible:    mainWindow.highLatencyCheck
         QGCColoredImage {
             id:         satcomIcon
             height:     parent.height * 0.5

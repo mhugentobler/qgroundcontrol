@@ -43,6 +43,7 @@ Item {
     property real   currentCenterX:     0
     property var    activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
     property string formatedMessage:    activeVehicle ? activeVehicle.formatedMessage : ""
+    property bool highLatencyCheck:     true
 
     onHeightChanged: {
         //-- We only deal with the available height if within the Fly or Plan view
