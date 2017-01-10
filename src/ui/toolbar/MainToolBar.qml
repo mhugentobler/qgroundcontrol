@@ -313,7 +313,7 @@ Rectangle {
         id: satcomInfo
         Rectangle {
             color:          qgcPal.window //Qt.rgba(0,0,0,0.75)
-            width:          satcomCol.width   + ScreenTools.defaultFontPixelWidth  * 3
+            width:          Math.max(satcomCol.width + ScreenTools.defaultFontPixelWidth * 3, switchButtonText.width + ScreenTools.defaultFontPixelWidth * 3)
             height:         satcomCol.height  + ScreenTools.defaultFontPixelHeight * 2
             radius:         ScreenTools.defaultFontPixelHeight * 0.5
             Column {
@@ -334,27 +334,39 @@ Rectangle {
                     anchors.margins:    ScreenTools.defaultFontPixelHeight
                     columnSpacing:      ScreenTools.defaultFontPixelWidth
                     anchors.horizontalCenter: parent.horizontalCenter
-                    columns: 2
-                    QGCLabel {
-                        text:   "satcom/telemetry"
-                        color:  colorWhite
-                    }
-                    QGCLabel {
-                        text:   "active"
-                        color:  colorWhite
+                    Text {
+                        text: mainWindow.activeCommText
+                        font.pointSize: 8
+                        color: colorWhite
                     }
                 }
                 Button {
-                    text: "switch to satcom/telemetry"
+                    id: commSwitchButton
+                    width: switchButtonText.width + 10
+                    height: switchButtonText.height + 10
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    visible: true
+                    Text {
+                        id: switchButtonText
+                        text: mainWindow.switchCommText
+                        font.pointSize: 8
+                        color: colorGrey
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                     onClicked: {
                         linkManager.switchSatcomClick(mainWindow.isSatcomCheck)
                         if (mainWindow.isSatcomCheck) {
                             mainWindow.isSatcomCheck = false
                             mainWindow.satcomOpacity = 1.0
+                            mainWindow.activeCommText = "Satcom Active"
+                            mainWindow.switchCommText = "Switch to Telemetry"
                         }
                         else {
                             mainWindow.isSatcomCheck = true
                             mainWindow.satcomOpacity = 0.5
+                            mainWindow.activeCommText = "Telemetry Active"
+                            mainWindow.switchCommText = "Switch to Satcom"
                         }
                     }
                 }

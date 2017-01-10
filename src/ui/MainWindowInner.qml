@@ -44,8 +44,10 @@ Item {
     property var    activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
     property string formatedMessage:    activeVehicle ? activeVehicle.formatedMessage : ""
     property bool   highLatencyCheck:   true
-    property bool   isSatcomCheck:      false
+    property bool   isSatcomCheck:      true
     property real   satcomOpacity:      0.5
+    property string activeCommText:     "Telemetry Active"
+    property string switchCommText:     "Switch to Satcom"
 
     onHeightChanged: {
         //-- We only deal with the available height if within the Fly or Plan view
