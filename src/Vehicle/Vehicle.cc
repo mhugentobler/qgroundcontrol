@@ -97,6 +97,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _flying(false)
     , _connectionLost(false)
     , _connectionLostEnabled(true)
+    , _connectionLostTimeoutMSecs(3500)
     , _missionManager(NULL)
     , _missionManagerInitialRequestComplete(false)
     , _parameterLoader(NULL)
@@ -281,6 +282,7 @@ Vehicle::Vehicle(QObject* parent)
     , _autoDisconnect(false)
     , _connectionLost(false)
     , _connectionLostEnabled(true)
+    , _connectionLostTimeoutMSecs(3500)
     , _missionManager(NULL)
     , _missionManagerInitialRequestComplete(false)
     , _parameterLoader(NULL)
@@ -1426,6 +1428,20 @@ void Vehicle::_connectionLostTimeout(void)
             disconnectInactiveVehicle();
         }
     }
+}
+
+//satcomtest
+int Vehicle::getConnectionLostVariable()
+{
+    return _connectionLostTimeoutMSecs;
+}
+
+//satcomtest
+void Vehicle::setConnectionLostVariable(int connectionLostVariable)
+{
+    _connectionLostTimeoutMSecs = connectionLostVariable;
+    _connectionLostTimer.setInterval(Vehicle::_connectionLostTimeoutMSecs);
+
 }
 
 void Vehicle::_connectionActive(void)

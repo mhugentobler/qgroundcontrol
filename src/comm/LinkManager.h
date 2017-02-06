@@ -89,6 +89,9 @@ public:
     Q_INVOKABLE bool                endCreateConfiguration      (LinkConfiguration* config);
     Q_INVOKABLE void                removeConfiguration         (LinkConfiguration* config);
 
+    //satcomtest
+    Q_INVOKABLE bool                activeLinkHighLatency();
+
     // Property accessors
 
     bool autoconnectUDP             (void)  { return _autoconnectUDP; }
@@ -117,7 +120,7 @@ public:
     /// Save list of link configurations from disk
     void saveLinkConfigurationList();
 
-    /// Suspend automatic confguration updates (during link maintenance for instance)
+    /// Suspend automatic configuration updates (during link maintenance for instance)
     void suspendConfigurationUpdates(bool suspend);
 
     /// Sets the flag to suspend the all new connections

@@ -20,7 +20,6 @@
 #include <QApplication>
 #include <QDebug>
 #include <QSignalSpy>
-
 #ifndef __ios__
 #include "QGCSerialPortInfo.h"
 #endif
@@ -68,6 +67,7 @@ LinkManager::LinkManager(QGCApplication* app)
     , _autoconnect3DRRadio(true)
     , _autoconnectPX4Flow(true)
     , _autoconnectRTKGPS(true)
+
 {
     qmlRegisterUncreatableType<LinkManager>         ("QGroundControl", 1, 0, "LinkManager",         "Reference only");
     qmlRegisterUncreatableType<LinkConfiguration>   ("QGroundControl", 1, 0, "LinkConfiguration",   "Reference only");
@@ -213,6 +213,7 @@ void LinkManager::_addLink(LinkInterface* link)
     // This connection is queued since it will cloe the link. So we want the link emitter to return otherwise we would
     // close the link our from under itself.
     connect(link, &LinkInterface::connectionRemoved,    this, &LinkManager::_linkConnectionRemoved, Qt::QueuedConnection);
+
 }
 
 void LinkManager::disconnectAll(void)
@@ -233,6 +234,7 @@ bool LinkManager::connectLink(LinkInterface* link)
 
     return link->_connect();
 }
+
 
 void LinkManager::disconnectLink(LinkInterface* link)
 {
@@ -623,16 +625,39 @@ void LinkManager::shutdown(void)
 
 void LinkManager::switchSatcomClick(bool satcomActive)
 {
-    qDebug("CLICKED");
-    if (satcomActive) {
-        emit isSatcomActive(false);
-        qDebug("satcom is now active? %d",satcomActive);
-    }
-    else {
-        emit isSatcomActive(true);
-        qDebug("satcom is now active? %d",satcomActive);
+
+    if (_toolbox->multiVehicleManager()->activeVehicle()) {
+        if (satcomActive) {
+            emit isSatcomActive(false);
+            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(10000);
+            qDebug("satcom is now active? %d",satcomActive);
+            qDebug("connection lost variable is: %d", qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->getConnectionLostVariable());
+        }
+        else {
+            emit isSatcomActive(true);
+            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(3500);
+            qDebug("satcom is now active? %d",satcomActive);
+            qDebug("connection lost variable is: %d", qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->getConnectionLostVariable());
+        }
     }
 }
+
+
+//satcomtest
+bool LinkManager::activeLinkHighLatency()
+{
+    for (int i=0; i<_links.count(); i++) {
+        if ( _links.value<LinkInterface*>(i)->isConnected()) {
+            if ( _links.value<LinkInterface*>(i)->getLinkConfiguration()->isHighLatency()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    return false;
+}
+
 
 
 bool LinkManager::_setAutoconnectWorker(bool& currentAutoconnect, bool newAutoconnect, const char* autoconnectKey)

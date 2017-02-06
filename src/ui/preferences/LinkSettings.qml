@@ -125,6 +125,8 @@ Rectangle {
             enabled:    _currentSelection && !_currentSelection.link
             onClicked: {
                 QGroundControl.linkManager.createConnectedLink(_currentSelection)
+                //satcomtest
+                QGroundControl.linkManager.activeLinkHighLatency()
             }
         }
         QGCButton {
@@ -132,6 +134,8 @@ Rectangle {
             enabled:    _currentSelection && _currentSelection.link
             onClicked: {
                 QGroundControl.linkManager.disconnectLink(_currentSelection.link, false)
+                //satcomtest
+                QGroundControl.linkManager.activeLinkHighLatency()
             }
         }
     }
@@ -296,7 +300,6 @@ Rectangle {
                         onCheckedChanged: {
                             if(editConfig) {
                                 editConfig.highLatency = checked
-                                mainWindow.highLatencyCheck = checked
                             }
                         }
                         Component.onCompleted: {

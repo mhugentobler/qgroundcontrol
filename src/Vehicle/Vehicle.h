@@ -267,6 +267,7 @@ public:
     Q_PROPERTY(bool                 rover                   READ rover                                                  CONSTANT)
     Q_PROPERTY(bool                 autoDisconnect          MEMBER _autoDisconnect                                      NOTIFY autoDisconnectChanged)
     Q_PROPERTY(QString              prearmError             READ prearmError            WRITE setPrearmError            NOTIFY prearmErrorChanged)
+    //Q_PROPERTY(int                  connectionLostVariable  READ connectionLostVariable WRITE setConnectionLostVariable NOTIFY connectionLostVariableChanged)
 
     /// true: Vehicle is flying, false: Vehicle is on ground
     Q_PROPERTY(bool flying      READ flying     WRITE setFlying     NOTIFY flyingChanged)
@@ -428,7 +429,6 @@ public:
     QString flightMode(void) const;
     void setFlightMode(const QString& flightMode);
 
-
     bool hilMode(void);
     void setHilMode(bool hilMode);
 
@@ -505,6 +505,10 @@ public:
 
     void setConnectionLostEnabled(bool connectionLostEnabled);
 
+    //satcomtest
+    int getConnectionLostVariable();
+    void setConnectionLostVariable(int connectionLostVariable);
+
     ParameterLoader* getParameterLoader(void);
 
     static const int cMaxRcChannels = 18;
@@ -570,6 +574,7 @@ signals:
     void currentStateChanged    ();
     void flowImageIndexChanged  ();
     void rcRSSIChanged          (int rcRSSI);
+    //void connectionLostVariableChanged(int connectionLostVariable);
 
     void firmwareMajorVersionChanged(int major);
     void firmwareMinorVersionChanged(int minor);
@@ -695,7 +700,7 @@ private:
     // Lost connection handling
     bool                _connectionLost;
     bool                _connectionLostEnabled;
-    static const int    _connectionLostTimeoutMSecs = 3500;  // Signal connection lost after 3.5 seconds of missed heartbeat
+    int                 _connectionLostTimeoutMSecs;  // Signal connection lost after x seconds of missed heartbeat
     QTimer              _connectionLostTimer;
 
     MissionManager*     _missionManager;

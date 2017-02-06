@@ -19,7 +19,7 @@ import QGroundControl.Controls              1.0
 import QGroundControl.FlightDisplay         1.0
 import QGroundControl.ScreenTools           1.0
 import QGroundControl.MultiVehicleManager   1.0
-import QGroundControl.QGCPositionManager   1.0
+import QGroundControl.QGCPositionManager    1.0
 
 /// Inner common QML for mainWindow
 Item {
@@ -43,7 +43,6 @@ Item {
     property real   currentCenterX:     0
     property var    activeVehicle:      QGroundControl.multiVehicleManager.activeVehicle
     property string formatedMessage:    activeVehicle ? activeVehicle.formatedMessage : ""
-    property bool   highLatencyCheck:   true
     property bool   isSatcomCheck:      true
     property real   satcomOpacity:      0.5
     property string activeCommText:     "Telemetry Active"
