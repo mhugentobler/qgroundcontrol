@@ -268,7 +268,7 @@ Row {
         id:         satcom
         width:      satcomIcon.width
         height:     mainWindow.tbCellHeight
-        visible:    QGroundControl.linkManager.activeLinkHighLatency()
+        visible:    mainWindow.highLatencyCheck
         QGCColoredImage {
             id:         satcomIcon
             height:     parent.height * 0.5

@@ -39,6 +39,7 @@ Item {
             colorGroupEnabled:  enabled
         }
 
+
         QGCLabel {
             id:     udpLabel
             text:   qsTr("UDP Link Settings")
@@ -173,6 +174,21 @@ Item {
                         }
                     }
                 }
+            }
+        }
+
+        QGCCheckBox {
+            id:         highLatencyCheckBox
+            text:       "High latency link"
+            checked:    true
+            onCheckedChanged: {
+                if(subEditConfig) {
+                    subEditConfig.highLatency = checked
+                }
+            }
+            Component.onCompleted: {
+                if(subEditConfig)
+                    checked = subEditConfig.highLatency
             }
         }
     }

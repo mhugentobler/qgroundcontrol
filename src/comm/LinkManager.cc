@@ -67,6 +67,8 @@ LinkManager::LinkManager(QGCApplication* app)
     , _autoconnect3DRRadio(true)
     , _autoconnectPX4Flow(true)
     , _autoconnectRTKGPS(true)
+    //satcomtest
+    , _connectedHighLatency(false)
 
 {
     qmlRegisterUncreatableType<LinkManager>         ("QGroundControl", 1, 0, "LinkManager",         "Reference only");
@@ -333,7 +335,7 @@ void LinkManager::saveLinkConfigurationList()
                 settings.setValue(root + "/name", linkConfig->name());
                 settings.setValue(root + "/type", linkConfig->type());
                 settings.setValue(root + "/auto", linkConfig->isAutoConnect());
-                settings.setValue(root + "/highLatency", linkConfig->isHighLatency());
+                //settings.setValue(root + "/highLatency", linkConfig->isHighLatency());
                 // Have the instance save its own values
                 linkConfig->saveSettings(settings, root);
             }
@@ -368,7 +370,7 @@ void LinkManager::loadLinkConfigurationList()
                         if(!name.isEmpty()) {
                             LinkConfiguration* pLink = NULL;
                             bool autoConnect = settings.value(root + "/auto").toBool();
-                            bool highLatency = settings.value(root + "/highLatency").toBool();
+                            //bool highLatency = settings.value(root + "/highLatency").toBool();
                             switch((LinkConfiguration::LinkType)type) {
 #ifndef __ios__
                                 case LinkConfiguration::TypeSerial:
@@ -404,7 +406,7 @@ void LinkManager::loadLinkConfigurationList()
                             if(pLink) {
                                 //-- Have the instance load its own values
                                 pLink->setAutoConnect(autoConnect);
-                                pLink->setHighLatency(highLatency);
+                                //pLink->setHighLatency(highLatency);
                                 pLink->loadSettings(settings, root);
                                 _linkConfigurations.append(pLink);
                                 linksChanged = true;
@@ -644,18 +646,23 @@ void LinkManager::switchSatcomClick(bool satcomActive)
 
 
 //satcomtest
-bool LinkManager::activeLinkHighLatency()
+bool LinkManager::connectedLinkHighLatency()
 {
+    bool connectedHighLatency = false;
+
+    usleep(1000);           //sleeping because of timing problems
     for (int i=0; i<_links.count(); i++) {
-        if ( _links.value<LinkInterface*>(i)->isConnected()) {
-            if ( _links.value<LinkInterface*>(i)->getLinkConfiguration()->isHighLatency()) {
-                return true;
-            } else {
-                return false;
+        //LinkInterface *link = _links.value<LinkInterface*>(i);
+        if (_links.value<LinkInterface*>(i)->isConnected()) {
+            if (_links.value<LinkInterface*>(i)->getLinkConfiguration()->type() == _links.value<LinkInterface*>(i)->getLinkConfiguration()->LinkType::TypeUdp) {
+                connectedHighLatency = _links.value<LinkInterface*>(i)->getLinkConfiguration()->isHighLatency();
             }
         }
+        usleep(1000);
     }
-    return false;
+    qDebug("is there a high lat link connected? %d", connectedHighLatency);
+    _connectedHighLatency = connectedHighLatency;
+    return _connectedHighLatency;
 }
 
 

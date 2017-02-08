@@ -43,8 +43,10 @@ class UDPConfiguration : public LinkConfiguration
 
 public:
 
-    Q_PROPERTY(quint16      localPort   READ localPort  WRITE setLocalPort  NOTIFY localPortChanged)
-    Q_PROPERTY(QStringList  hostList    READ hostList                       NOTIFY  hostListChanged)
+    Q_PROPERTY(quint16      localPort       READ localPort      WRITE setLocalPort      NOTIFY localPortChanged)
+    Q_PROPERTY(QStringList  hostList        READ hostList                               NOTIFY hostListChanged)
+    //satcomtest
+    Q_PROPERTY(bool         highLatency     READ highLatency    WRITE setHighLatency    NOTIFY highLatencyChanged)
 
     /*!
      * @brief Regular constructor
@@ -54,7 +56,7 @@ public:
     UDPConfiguration(const QString& name);
 
     /*!
-     * @brief Copy contructor
+     * @brief Copy constructor
      *
      * When manipulating data, you create a copy of the configuration, edit it
      * and then transfer its content to the original (using copyFrom() below). Use this
@@ -96,6 +98,9 @@ public:
      */
     quint16 localPort   () { return _localPort; }
 
+    //satcomtest
+    bool highLatency  () { return _highLatency; }
+
     /*!
      * @brief Add a target host
      *
@@ -125,6 +130,9 @@ public:
      */
     void setLocalPort   (quint16 port);
 
+    //satcomtest
+    void setHighLatency (bool highLat) { _highLatency = highLat; emit highLatencyChanged(); qWarning("highlat changed"); }
+
     /*!
      * @brief QML Interface
      */
@@ -136,11 +144,14 @@ public:
     void        loadSettings    (QSettings& settings, const QString& root);
     void        saveSettings    (QSettings& settings, const QString& root);
     void        updateSettings  ();
+    bool        isHighLatency   () { return _highLatency; }
     QString     settingsURL     () { return "UdpSettings.qml"; }
 
 signals:
     void localPortChanged   ();
     void hostListChanged    ();
+    //satcomtest
+    void highLatencyChanged ();
 
 private:
     void _updateHostList    ();
@@ -151,6 +162,8 @@ private:
     QMap<QString, int> _hosts;  ///< ("host", port)
     QStringList _hostList;      ///< Exposed to QML
     quint16 _localPort;
+    //satcomtest
+    bool _highLatency;          ///< is this a high latency (satellite) link
 };
 
 class UDPLink : public LinkInterface

@@ -47,6 +47,7 @@ Item {
     property real   satcomOpacity:      0.5
     property string activeCommText:     "Telemetry Active"
     property string switchCommText:     "Switch to Satcom"
+    property bool   highLatencyCheck:   QGroundControl.linkManager.connectedLinkHighLatency
 
     onHeightChanged: {
         //-- We only deal with the available height if within the Fly or Plan view

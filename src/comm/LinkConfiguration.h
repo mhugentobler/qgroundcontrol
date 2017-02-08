@@ -36,7 +36,7 @@ public:
     Q_PROPERTY(QString          settingsURL         READ settingsURL                            CONSTANT)
 
     //satcomtest
-    Q_PROPERTY(bool             highLatency         READ isHighLatency  WRITE setHighLatency    NOTIFY highLatencyChanged)
+    Q_PROPERTY(bool             highLatency         READ isHighLatency                          CONSTANT)
 
     // Property accessors
 
@@ -91,7 +91,7 @@ public:
      * @return True if this is a high latency (satellite) link.
      */
     //satcomtest
-    bool isHighLatency() { return _highLatency; }
+    //bool isHighLatency() { return _highLatency; }
 
     /*!
      * Set if this is this a dynamic configuration. (decided at runtime)
@@ -107,7 +107,7 @@ public:
      * Set if this is a high latency link
      */
     //satcomtest
-    void setHighLatency(bool highLatency) { _highLatency = highLatency; emit highLatencyChanged(); }
+    //void setHighLatency(bool highLatency) { _highLatency = highLatency; emit highLatencyChanged(); qWarning("highlat changed"); }
 
     /// Virtual Methods
 
@@ -117,6 +117,9 @@ public:
      * @return True if this type can be set as an Auto Connect configuration
      */
     virtual bool isAutoConnectAllowed() { return true; }
+
+    //satcomtest
+    virtual bool isHighLatency() { return false; }
 
     /*!
      * @brief Connection type
@@ -197,7 +200,7 @@ signals:
     void dynamicChanged     ();
     void autoConnectChanged ();
     //satcomtest
-    void highLatencyChanged ();
+    //void highLatencyChanged ();
 
     void linkChanged        (LinkInterface* link);
 
@@ -209,7 +212,7 @@ private:
     bool    _autoConnect;   ///< This connection is started automatically at boot
 
     //satcomtest
-    bool    _highLatency;   ///< This is a high latency (satellite) link
+    //volatile bool    _highLatency;   ///< This is a high latency (satellite) link
 };
 
 #endif // LINKCONFIGURATION_H

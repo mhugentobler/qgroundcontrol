@@ -241,7 +241,10 @@ FORMS += \
     src/ui/SettingsDialog.ui \
     src/ui/uas/UASQuickView.ui \
     src/ui/uas/UASQuickViewItemSelect.ui \
-    src/ui/UASInfo.ui \
+    src/ui/UASInfo.ui #\
+    #src/ui/AutoTrim.ui \
+    #src/ui/energybudget.ui \
+    #src/ui/sensorpodstatus.ui
 }
 
 HEADERS += \
@@ -394,7 +397,11 @@ HEADERS += \
     src/ViewWidgets/CustomCommandWidgetController.h \
     src/ViewWidgets/LogDownload.h \
     src/ViewWidgets/LogDownloadController.h \
-    src/ViewWidgets/ViewWidgetController.h \
+    src/ViewWidgets/ViewWidgetController.h #\
+    #src/uas/ASLUAV.h \
+    #src/ui/AutoTrim.h \
+    #src/ui/energybudget.h \
+    #src/ui/sensorpodstatus.h
 }
 
 iOSBuild {
@@ -535,7 +542,11 @@ SOURCES += \
     src/ViewWidgets/CustomCommandWidgetController.cc \
     src/ViewWidgets/LogDownload.cc \
     src/ViewWidgets/LogDownloadController.cc \
-    src/ViewWidgets/ViewWidgetController.cc
+    src/ViewWidgets/ViewWidgetController.cc #\
+    #src/uas/ASLUAV.cc \
+    #src/ui/AutoTrim.cc \
+    #src/ui/energybudget.cc \
+    #src/ui/sensorpodstatus.cc
 }
 
 #

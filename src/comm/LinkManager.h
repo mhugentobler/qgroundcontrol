@@ -90,7 +90,7 @@ public:
     Q_INVOKABLE void                removeConfiguration         (LinkConfiguration* config);
 
     //satcomtest
-    Q_INVOKABLE bool                activeLinkHighLatency();
+    Q_INVOKABLE bool                connectedLinkHighLatency();
 
     // Property accessors
 
@@ -237,6 +237,8 @@ private:
     bool _autoconnect3DRRadio;
     bool _autoconnectPX4Flow;
     bool _autoconnectRTKGPS;
+    //satcomtest
+    bool _connectedHighLatency;
 
 #ifndef __ios__
     QTimer              _activeLinkCheckTimer;                  ///< Timer which checks for a vehicle showing up on a usb direct link

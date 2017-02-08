@@ -38,7 +38,7 @@ LinkConfiguration::LinkConfiguration(const QString& name)
     , _dynamic(false)
     , _autoConnect(false)
     //satcomtest
-    , _highLatency(false)
+    //, _highLatency(false)
 {
     _name = name;
     if (_name.isEmpty()) {
@@ -53,7 +53,7 @@ LinkConfiguration::LinkConfiguration(LinkConfiguration* copy)
     _dynamic    = copy->isDynamic();
     _autoConnect= copy->isAutoConnect();
     //satcomtest
-    _highLatency= copy->isHighLatency();
+    //_highLatency= copy->isHighLatency();
 
 
     Q_ASSERT(!_name.isEmpty());
@@ -67,7 +67,7 @@ void LinkConfiguration::copyFrom(LinkConfiguration* source)
     _dynamic    = source->isDynamic();
     _autoConnect= source->isAutoConnect();
     //satcomtest
-    _highLatency= source->isHighLatency();
+    //_highLatency= source->highLatency();
 }
 
 /*!

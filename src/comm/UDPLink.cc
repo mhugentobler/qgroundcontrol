@@ -72,6 +72,7 @@ UDPLink::UDPLink(UDPConfiguration* config)
     , _dnssServiceRef(NULL)
     #endif
     , _running(false)
+
 {
     Q_ASSERT(config != NULL);
     _config = config;
@@ -337,6 +338,8 @@ UDPConfiguration::UDPConfiguration(const QString& name) : LinkConfiguration(name
 UDPConfiguration::UDPConfiguration(UDPConfiguration* source) : LinkConfiguration(source)
 {
     _localPort = source->localPort();
+    //satcomtest
+    _highLatency = source->highLatency();
     QString host;
     int port;
     _hostList.clear();
@@ -353,6 +356,8 @@ void UDPConfiguration::copyFrom(LinkConfiguration *source)
     UDPConfiguration* usource = dynamic_cast<UDPConfiguration*>(source);
     Q_ASSERT(usource != NULL);
     _localPort = usource->localPort();
+    //satcomtest
+    _highLatency = usource->highLatency();
     _hosts.clear();
     QString host;
     int port;
@@ -482,6 +487,8 @@ void UDPConfiguration::saveSettings(QSettings& settings, const QString& root)
     settings.beginGroup(root);
     settings.setValue("port", (int)_localPort);
     settings.setValue("hostCount", _hosts.count());
+    //satcomtest
+    settings.setValue("highLatency", (bool)_highLatency);
     int index = 0;
     QMap<QString, int>::const_iterator it = _hosts.begin();
     while(it != _hosts.end()) {

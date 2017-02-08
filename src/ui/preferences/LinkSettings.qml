@@ -126,7 +126,8 @@ Rectangle {
             onClicked: {
                 QGroundControl.linkManager.createConnectedLink(_currentSelection)
                 //satcomtest
-                QGroundControl.linkManager.activeLinkHighLatency()
+                mainWindow.highLatencyCheck = QGroundControl.linkManager.connectedLinkHighLatency()
+
             }
         }
         QGCButton {
@@ -135,7 +136,7 @@ Rectangle {
             onClicked: {
                 QGroundControl.linkManager.disconnectLink(_currentSelection.link, false)
                 //satcomtest
-                QGroundControl.linkManager.activeLinkHighLatency()
+                mainWindow.highLatencyCheck = QGroundControl.linkManager.connectedLinkHighLatency()
             }
         }
     }
@@ -293,20 +294,20 @@ Rectangle {
                     }
                     */
 
-                    QGCCheckBox {
-                        id:         highLatencyCheckBox
-                        text:       "High latency link"
-                        checked:    true
-                        onCheckedChanged: {
-                            if(editConfig) {
-                                editConfig.highLatency = checked
-                            }
-                        }
-                        Component.onCompleted: {
-                            if(editConfig)
-                                checked = editConfig.highLatency
-                        }
-                    }
+//                    QGCCheckBox {
+//                        id:         highLatencyCheckBox
+//                        text:       "High latency link"
+//                        checked:    true
+//                        onCheckedChanged: {
+//                            if(editConfig) {
+//                                editConfig.highLatency = checked
+//                            }
+//                        }
+//                        Component.onCompleted: {
+//                            if(editConfig)
+//                                checked = editConfig.highLatency
+//                        }
+//                    }
 
                     Item {
                         height: ScreenTools.defaultFontPixelHeight
