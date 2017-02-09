@@ -631,7 +631,7 @@ void LinkManager::switchSatcomClick(bool satcomActive)
     if (_toolbox->multiVehicleManager()->activeVehicle()) {
         if (satcomActive) {
             emit isSatcomActive(false);
-            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(10000);
+            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(30000);
             qDebug("satcom is now active? %d",satcomActive);
             qDebug("connection lost variable is: %d", qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->getConnectionLostVariable());
         }
@@ -652,7 +652,6 @@ bool LinkManager::connectedLinkHighLatency()
 
     usleep(1000);           //sleeping because of timing problems
     for (int i=0; i<_links.count(); i++) {
-        //LinkInterface *link = _links.value<LinkInterface*>(i);
         if (_links.value<LinkInterface*>(i)->isConnected()) {
             if (_links.value<LinkInterface*>(i)->getLinkConfiguration()->type() == _links.value<LinkInterface*>(i)->getLinkConfiguration()->LinkType::TypeUdp) {
                 connectedHighLatency = _links.value<LinkInterface*>(i)->getLinkConfiguration()->isHighLatency();

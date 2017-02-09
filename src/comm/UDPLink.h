@@ -144,7 +144,7 @@ public:
     void        loadSettings    (QSettings& settings, const QString& root);
     void        saveSettings    (QSettings& settings, const QString& root);
     void        updateSettings  ();
-    bool        isHighLatency   () { return _highLatency; }
+    bool        isHighLatency   () { return highLatency(); }
     QString     settingsURL     () { return "UdpSettings.qml"; }
 
 signals:

@@ -451,6 +451,11 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_WIND_COV:
         _handleWindCov(message);
         break;
+    //satcomtest
+    case MAVLINK_MSG_ID_HIGH_LATENCY:
+        _handleHighLatency(message);
+        break;
+
 
     // Following are ArduPilot dialect messages
 
@@ -774,6 +779,13 @@ void Vehicle::_handleRCChannelsRaw(mavlink_message_t& message)
     emit remoteControlRSSIChanged(channels.rssi);
     emit rcChannelsChanged(channelCount, pwmValues);
 }
+
+
+//satcomtest
+void Vehicle::_handleHighLatency(mavlink_message_t& message) {
+    _connectionActive();
+}
+
 
 bool Vehicle::_containsLink(LinkInterface* link)
 {
