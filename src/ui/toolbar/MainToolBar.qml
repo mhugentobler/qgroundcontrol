@@ -307,6 +307,7 @@ Rectangle {
         }
     }
 
+    //satcomtest
     //-------------------------------------------------------------------------
     // Satellite link Info
     Component {
@@ -345,7 +346,7 @@ Rectangle {
                     width: switchButtonText.width + 10
                     height: switchButtonText.height + 10
                     anchors.horizontalCenter: parent.horizontalCenter
-                    visible: true
+                    visible: mainWindow.multipleLinks
                     Text {
                         id: switchButtonText
                         text: mainWindow.switchCommText

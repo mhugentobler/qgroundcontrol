@@ -91,6 +91,7 @@ public:
 
     //satcomtest
     Q_INVOKABLE bool                connectedLinkHighLatency();
+    Q_INVOKABLE bool                multipleLinksConnected();
 
     // Property accessors
 
@@ -239,6 +240,7 @@ private:
     bool _autoconnectRTKGPS;
     //satcomtest
     bool _connectedHighLatency;
+    bool _multipleLinksConnected;
 
 #ifndef __ios__
     QTimer              _activeLinkCheckTimer;                  ///< Timer which checks for a vehicle showing up on a usb direct link

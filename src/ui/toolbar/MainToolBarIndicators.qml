@@ -261,6 +261,7 @@ Row {
         }
     }
 
+    //satcomtest
     //-----------------------
     // Satcom Indicator
     // appears if high latency link is checked in communication link settings

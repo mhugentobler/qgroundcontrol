@@ -69,6 +69,7 @@ LinkManager::LinkManager(QGCApplication* app)
     , _autoconnectRTKGPS(true)
     //satcomtest
     , _connectedHighLatency(false)
+    , _multipleLinksConnected(false)
 
 {
     qmlRegisterUncreatableType<LinkManager>         ("QGroundControl", 1, 0, "LinkManager",         "Reference only");
@@ -625,6 +626,8 @@ void LinkManager::shutdown(void)
     disconnectAll();
 }
 
+
+//satcomtest
 void LinkManager::switchSatcomClick(bool satcomActive)
 {
 
@@ -664,6 +667,23 @@ bool LinkManager::connectedLinkHighLatency()
     return _connectedHighLatency;
 }
 
+
+//satcomtest
+bool LinkManager::multipleLinksConnected()
+{
+    int connectedLinks = 0;
+    for (int i=0; i<_links.count(); i++) {
+        if (_links.value<LinkInterface*>(i)->isConnected()) {
+            connectedLinks++;
+        }
+        usleep(1000);
+    }
+    if (connectedLinks < 2) {
+        return false;
+    } else {
+        return true;
+    }
+}
 
 
 bool LinkManager::_setAutoconnectWorker(bool& currentAutoconnect, bool newAutoconnect, const char* autoconnectKey)

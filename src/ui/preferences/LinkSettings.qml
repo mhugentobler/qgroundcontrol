@@ -127,6 +127,7 @@ Rectangle {
                 QGroundControl.linkManager.createConnectedLink(_currentSelection)
                 //satcomtest
                 mainWindow.highLatencyCheck = QGroundControl.linkManager.connectedLinkHighLatency()
+                mainWindow.multipleLinks = QGroundControl.linkManager.multipleLinksConnected()
 
             }
         }
@@ -137,6 +138,8 @@ Rectangle {
                 QGroundControl.linkManager.disconnectLink(_currentSelection.link, false)
                 //satcomtest
                 mainWindow.highLatencyCheck = QGroundControl.linkManager.connectedLinkHighLatency()
+                mainWindow.multipleLinks = QGroundControl.linkManager.multipleLinksConnected()
+
             }
         }
     }
