@@ -120,10 +120,11 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
         MobileScreenMgr::setKeepScreenOn(true);
     }
 #endif
-
+    //satcomtest
     connect(qgcApp()->toolbox()->linkManager(), &LinkManager::isSatcomActive, this, &MultiVehicleManager::_isSatcomActive);
 }
 
+//satcomtest
 void MultiVehicleManager::_isSatcomActive(bool enable)
 {
     if (!enable) {

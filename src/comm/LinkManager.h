@@ -169,7 +169,9 @@ public:
     virtual void setToolbox(QGCToolbox *toolbox);
 
 signals:
+    //satcomtest
     void isSatcomActive             (bool enable);
+
     void autoconnectUDPChanged      (bool autoconnect);
     void autoconnectPixhawkChanged  (bool autoconnect);
     void autoconnect3DRRadioChanged (bool autoconnect);

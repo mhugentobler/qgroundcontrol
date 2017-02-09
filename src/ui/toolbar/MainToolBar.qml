@@ -94,6 +94,7 @@ Rectangle {
         return colorRed;
     }
 
+    //satcomtest
     function getSatcomColor() {
         return colorGreen;
     }
