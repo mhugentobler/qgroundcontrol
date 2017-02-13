@@ -131,7 +131,7 @@ public:
     void setLocalPort   (quint16 port);
 
     //satcomtest
-    void setHighLatency (bool highLat) { _highLatency = highLat; emit highLatencyChanged(); qWarning("highlat changed"); }
+    void setHighLatency (bool highLat) { _highLatency = highLat; emit highLatencyChanged(); }
 
     /*!
      * @brief QML Interface
@@ -144,7 +144,7 @@ public:
     void        loadSettings    (QSettings& settings, const QString& root);
     void        saveSettings    (QSettings& settings, const QString& root);
     void        updateSettings  ();
-    bool        isHighLatency   () { return highLatency(); }
+
     QString     settingsURL     () { return "UdpSettings.qml"; }
 
 signals:

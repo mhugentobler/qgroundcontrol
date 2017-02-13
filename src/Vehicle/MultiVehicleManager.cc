@@ -127,7 +127,7 @@ void MultiVehicleManager::_vehicleHeartbeatInfo(LinkInterface* link, int vehicle
 //satcomtest
 void MultiVehicleManager::_isSatcomActive(bool enable)
 {
-    if (!enable) {
+    if (enable) {
         qDebug("enable satcom");
         qDebug("disable telemetry");
 

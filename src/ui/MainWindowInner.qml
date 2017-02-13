@@ -45,12 +45,12 @@ Item {
     property string formatedMessage:    activeVehicle ? activeVehicle.formatedMessage : ""
 
     //satcomtest
-    property bool   isSatcomCheck:      true
+    property var    isSatcomCheck:      QGroundControl.linkManager.switchSatcomClick
     property real   satcomOpacity:      0.5
     property string activeCommText:     "Telemetry Active"
     property string switchCommText:     "Switch to Satcom"
-    property bool   highLatencyCheck:   QGroundControl.linkManager.connectedLinkHighLatency
-    property bool   multipleLinks:      QGroundControl.linkManager.multipleLinksConnected
+    property var    highLatencyCheck:   QGroundControl.linkManager.connectedLinkHighLatency
+    property var    multipleLinks:      QGroundControl.linkManager.multipleLinksConnected
 
     onHeightChanged: {
         //-- We only deal with the available height if within the Fly or Plan view

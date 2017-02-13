@@ -3,8 +3,8 @@
 
 #include <QWidget>
 #include <QTime>
-#include "UASManager.h"
-#include "ui_AutoTrim.h"
+#include "../uas/UASInterface.h"
+#include "AutoTrim.ui"
 
 class AutoTrim : public QWidget
 {

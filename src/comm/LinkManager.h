@@ -92,6 +92,7 @@ public:
     //satcomtest
     Q_INVOKABLE bool                connectedLinkHighLatency();
     Q_INVOKABLE bool                multipleLinksConnected();
+    Q_INVOKABLE bool                switchSatcomClick();
 
     // Property accessors
 
@@ -155,7 +156,6 @@ public:
     // Called to signal app shutdown. Disconnects all links while turning off auto-connect.
     Q_INVOKABLE void shutdown(void);
 
-    Q_INVOKABLE void switchSatcomClick(bool satcomActive);
 
 #ifdef QT_DEBUG
     // Only used by unit test tp restart after a shutdown
@@ -169,14 +169,14 @@ public:
     virtual void setToolbox(QGCToolbox *toolbox);
 
 signals:
-    //satcomtest
-    void isSatcomActive             (bool enable);
-
     void autoconnectUDPChanged      (bool autoconnect);
     void autoconnectPixhawkChanged  (bool autoconnect);
     void autoconnect3DRRadioChanged (bool autoconnect);
     void autoconnectPX4FlowChanged  (bool autoconnect);
     void autoconnectRTKGPSChanged   (bool autoconnect);
+
+    //satcomtest
+    void isSatcomActive             (bool active);
 
     void newLink(LinkInterface* link);
 
@@ -243,6 +243,7 @@ private:
     //satcomtest
     bool _connectedHighLatency;
     bool _multipleLinksConnected;
+    bool _satcomActive;
 
 #ifndef __ios__
     QTimer              _activeLinkCheckTimer;                  ///< Timer which checks for a vehicle showing up on a usb direct link

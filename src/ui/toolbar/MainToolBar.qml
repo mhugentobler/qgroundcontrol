@@ -357,15 +357,15 @@ Rectangle {
                         anchors.verticalCenter: parent.verticalCenter
                     }
                     onClicked: {
-                        linkManager.switchSatcomClick(mainWindow.isSatcomCheck)
+                        mainWindow.isSatcomCheck = QGroundControl.linkManager.switchSatcomClick()
                         if (mainWindow.isSatcomCheck) {
-                            mainWindow.isSatcomCheck = false
+                            //mainWindow.isSatcomCheck = false
                             mainWindow.satcomOpacity = 1.0
                             mainWindow.activeCommText = "Satcom Active"
                             mainWindow.switchCommText = "Switch to Telemetry"
                         }
                         else {
-                            mainWindow.isSatcomCheck = true
+                            //mainWindow.isSatcomCheck = true
                             mainWindow.satcomOpacity = 0.5
                             mainWindow.activeCommText = "Telemetry Active"
                             mainWindow.switchCommText = "Switch to Satcom"

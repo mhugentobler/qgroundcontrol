@@ -70,6 +70,7 @@ LinkManager::LinkManager(QGCApplication* app)
     //satcomtest
     , _connectedHighLatency(false)
     , _multipleLinksConnected(false)
+    , _satcomActive(false)
 
 {
     qmlRegisterUncreatableType<LinkManager>         ("QGroundControl", 1, 0, "LinkManager",         "Reference only");
@@ -628,23 +629,25 @@ void LinkManager::shutdown(void)
 
 
 //satcomtest
-void LinkManager::switchSatcomClick(bool satcomActive)
+bool LinkManager::switchSatcomClick()
 {
-
     if (_toolbox->multiVehicleManager()->activeVehicle()) {
-        if (satcomActive) {
+        if (_satcomActive) {
             emit isSatcomActive(false);
-            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(30000);
-            qDebug("satcom is now active? %d",satcomActive);
-            qDebug("connection lost variable is: %d", qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->getConnectionLostVariable());
+            _satcomActive = false;
+            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(3500);
+            //qDebug("satcom is now active? %d",_satcomActive);
+            //qDebug("connection lost variable is: %d", qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->getConnectionLostVariable());
         }
         else {
             emit isSatcomActive(true);
-            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(3500);
-            qDebug("satcom is now active? %d",satcomActive);
-            qDebug("connection lost variable is: %d", qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->getConnectionLostVariable());
+            _satcomActive = true;
+            qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->setConnectionLostVariable(30000);
+            //qDebug("satcom is now active? %d",_satcomActive);
+            //qDebug("connection lost variable is: %d", qgcApp()->toolbox()->multiVehicleManager()->activeVehicle()->getConnectionLostVariable());
         }
     }
+    return _satcomActive;
 }
 
 
@@ -657,7 +660,7 @@ bool LinkManager::connectedLinkHighLatency()
     for (int i=0; i<_links.count(); i++) {
         if (_links.value<LinkInterface*>(i)->isConnected()) {
             if (_links.value<LinkInterface*>(i)->getLinkConfiguration()->type() == _links.value<LinkInterface*>(i)->getLinkConfiguration()->LinkType::TypeUdp) {
-                connectedHighLatency = _links.value<LinkInterface*>(i)->getLinkConfiguration()->isHighLatency();
+                connectedHighLatency = _links.value<LinkInterface*>(i)->getLinkConfiguration()->highLatency();
             }
         }
         usleep(1000);

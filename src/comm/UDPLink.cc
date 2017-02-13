@@ -489,6 +489,7 @@ void UDPConfiguration::saveSettings(QSettings& settings, const QString& root)
     settings.setValue("hostCount", _hosts.count());
     //satcomtest
     settings.setValue("highLatency", (bool)_highLatency);
+
     int index = 0;
     QMap<QString, int>::const_iterator it = _hosts.begin();
     while(it != _hosts.end()) {
